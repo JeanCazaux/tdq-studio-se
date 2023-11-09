@@ -22,6 +22,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -122,7 +125,8 @@ public class TalendSerializerBase extends SerializerBase implements Serializable
         if (LocalDateTime.class.isInstance(obj)) {
             out.write(TALEND_FORMAT_LOCALE_DATE_TIME);
             out.writeLong(
-                    ((LocalDateTime) obj).toInstant(OffsetDateTime.now().getOffset()).toEpochMilli());
+                    ((LocalDateTime) obj).toInstant(ZoneOffset.ofHours(8))
+                            .toEpochMilli());
             return;
         }
         Object newObj = obj.toString();
@@ -143,7 +147,8 @@ public class TalendSerializerBase extends SerializerBase implements Serializable
         // TDQ-10833 'java.sql.Timestamp' and 'TALEND_FORMAT_DATE' are as UnkownHeader on super deserialize. deserialize
         // it at here.
         if (head == TALEND_FORMAT_LOCALE_DATE_TIME) {
-            return LocalDateTime.ofInstant(Instant.ofEpochMilli(is.readLong()), ZoneId.systemDefault());
+            long readLong = is.readLong();
+            return LocalDateTime.ofInstant(Instant.ofEpochMilli(readLong), ZoneOffset.ofHours(8));
         }
         if (head == TALEND_FORMAT_TIME) {
             return new TalendFormatTime(new Time(is.readLong()));
