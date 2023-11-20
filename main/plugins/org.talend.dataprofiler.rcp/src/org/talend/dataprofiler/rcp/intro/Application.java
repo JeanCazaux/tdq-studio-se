@@ -74,7 +74,7 @@ public class Application implements IApplication {
                         .openError(shell, null, // $NON-NLS-1$
                                 Messages.getString(msgKey, StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING, StudioKeysFileCheck.getJavaVersion()));
             }
-            return IApplication.EXIT_RELAUNCH;
+            return IApplication.EXIT_OK;
         }
         Shell shell = DisplayUtils.getDefaultShell(false);
         // TDQ-12221: do check before use to make sure can popup the "Connect to TalendForge"
