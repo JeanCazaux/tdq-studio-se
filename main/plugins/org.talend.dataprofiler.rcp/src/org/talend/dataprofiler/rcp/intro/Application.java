@@ -30,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 // import org.eclipse.ui.internal.tweaklets.WorkbenchImplementation;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.dataprofiler.core.CorePlugin;
@@ -64,7 +65,7 @@ public class Application implements IApplication {
 
         Display display = PlatformUI.createDisplay();
         try {
-            StudioKeysFileCheck.validateJavaVersion();
+            JavaUtils.validateJavaVersion();
         } catch (Exception e) {
             Shell shell = new Shell(display, SWT.NONE);
             if (e instanceof VersionException) {
