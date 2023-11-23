@@ -45,6 +45,7 @@ import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.model.bridge.ReponsitoryContextBridge;
+import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 
 /**
@@ -202,7 +203,6 @@ public class FileSystemExportWriter implements IExportWriter {
     public void finish(ItemRecord[] records, List<IProject> projects) throws Exception {
         for (IProject project : projects) {
             IFile projFile = project.getFile(FileConstants.LOCAL_PROJECT_FILENAME);// named 'talend.project'
-
             writeSysFile(projFile);
 
             IFile definitonFile = DefinitionHandler.getTalendDefinitionFile(project);
@@ -210,6 +210,15 @@ public class FileSystemExportWriter implements IExportWriter {
 
             IFile versionFile = WorkspaceVersionHelper.getVersionFile(project);
             writeSysFile(versionFile);
+
+            // TDQ-21496 msjian: export some setting files(project.settings, relationship.index, migration_task.index)
+            writeSysFile(WorkspaceVersionHelper.getOneFile(project, EResourceConstant.SETTINGS,
+                    FileConstants.PROJECTSETTING_FILE_NAME));
+            writeSysFile(WorkspaceVersionHelper.getOneFile(project, EResourceConstant.SETTINGS,
+                    FileConstants.RELATIONSHIP_FILE_NAME));
+            writeSysFile(WorkspaceVersionHelper.getOneFile(project, EResourceConstant.SETTINGS,
+                    FileConstants.MIGRATION_TASK_FILE_NAME));
+            // TDQ-21496~
         }
 
         // TDQ-18173 msjian: export the context link file of analysis, report, connection.

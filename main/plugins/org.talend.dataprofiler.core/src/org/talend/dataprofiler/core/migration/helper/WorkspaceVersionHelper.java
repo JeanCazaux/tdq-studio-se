@@ -62,6 +62,13 @@ public final class WorkspaceVersionHelper {
                 .getFile(PluginConstant.VERSION_FILE_PATH);
     }
 
+    public static IFile getOneFile(IProject project, EResourceConstant folder, String file) {
+        if (project == null) {
+            project = ResourceManager.getRootProject();
+        }
+        return ResourceManager.getOneFolder(project, folder).getFile(file);
+    }
+
     /**
      * Method "isSecludedVersion" created by bzhou@talend.com.
      *

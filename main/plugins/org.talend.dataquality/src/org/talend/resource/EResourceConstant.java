@@ -66,6 +66,7 @@ public enum EResourceConstant {
     LIBRARIES("TDQ_Libraries", "TDQ_Libraries", ResourceConstant.READONLY, ResourceConstant.NO_SUBFOLDER), //$NON-NLS-1$ $NON-NLS-2$
     METADATA("metadata", "metadata", ResourceConstant.READONLY, ResourceConstant.NO_SUBFOLDER), //$NON-NLS-1$ $NON-NLS-2$
     ANALYSIS("Analyses", "TDQ_Data Profiling/Analyses", ResourceConstant.READONLY), //$NON-NLS-1$ $NON-NLS-2$
+    SETTINGS(".settings", ".settings", ResourceConstant.READONLY),
     TEMP_MAPDB(".Work_MapDB", ".Work_MapDB", ResourceConstant.READONLY), //$NON-NLS-1$ $NON-NLS-2$
     REPORTS("Reports", "TDQ_Data Profiling/Reports", ResourceConstant.READONLY), //$NON-NLS-1$ $NON-NLS-2$
     INDICATORS("Indicators", "TDQ_Libraries/Indicators", ResourceConstant.READONLY, ResourceConstant.NO_SUBFOLDER), //$NON-NLS-1$ $NON-NLS-2$
