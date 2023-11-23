@@ -30,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 // import org.eclipse.ui.internal.tweaklets.WorkbenchImplementation;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.core.GlobalServiceRegister;
@@ -45,6 +46,7 @@ import org.talend.registration.register.proxy.HttpProxyUtil;
 // import org.talend.dataprofiler.rcp.intro.linksbar.Workbench3xImplementation4CoolBar;
 import org.talend.registration.wizards.register.TalendForgeDialog;
 import org.talend.utils.StudioKeysFileCheck;
+import org.talend.utils.VersionException;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -66,6 +68,23 @@ public class Application implements IApplication {
         StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
 
         Display display = PlatformUI.createDisplay();
+
+        try {
+            JavaUtils.validateJavaVersion();
+        } catch (Exception e) {
+            Shell shell = new Shell(display, SWT.NONE);
+            if (e instanceof VersionException) {
+                String msg = Messages.getString("JavaVersion.CheckError", StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING,
+                        StudioKeysFileCheck.getJavaVersion());
+                if (!((VersionException) e).requireUpgrade()) {
+                    msg = Messages.getString("JavaVersion.CheckError.notSupported",
+                            StudioKeysFileCheck.JAVA_VERSION_MAXIMUM_STRING, StudioKeysFileCheck.getJavaVersion());
+                }
+                MessageDialog.openError(shell, null, msg);
+            }
+            return IApplication.EXIT_OK;
+        }
+
         Shell shell = DisplayUtils.getDefaultShell(false);
         // TDQ-12221: do check before use to make sure can popup the "Connect to TalendForge"
         checkBrowserSupport();
